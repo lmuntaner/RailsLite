@@ -20,9 +20,9 @@ module Phase6
       match_data = pattern.match(req.path)
       params = {}
       match_data.names.each_with_index do |key, index|
-        params[key] = match_data.names[index]
+        params[key] = match_data.captures[index]
       end
-      controller_class.new(req, res).invoke_action(action_name)
+      controller_class.new(req, res, params).invoke_action(action_name)
     end
   end
 
