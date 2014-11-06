@@ -12,17 +12,26 @@ module URLHelper
   end
   
   def get_method_name(pattern)
-    # keys = pattern.names
-    array_path = patter_to_a(pattern)
-    array_path.select! { |path| (path =~ /\w+_id$/).nil? }
-    # keys.count.times do |i|
-    #   array_path[i] = array_path[i].singularize
-    # end
-    "#{array_path.join('_')}_url"
+    array_path = pattern_to_a(pattern)
+    path_array = create_method_name(array_path)
+    "#{path_array.join('_')}_url"
+  end
+  
+  def create_method_name(array_path)
+    path_array = []
+    array_path.each_with_index do |path, index|
+      if not_path_id?(path)
+        path_array << path
+      else
+        path_array[index - 1] = array_path[index - 1].singularize
+        path_array << ""
+      end
+    end
+    path_array.reject(&:empty?)
   end
   
   def get_path_name(pattern)
-    array_path = patter_to_a(pattern)
+    array_path = pattern_to_a(pattern)
     "/#{array_path.join('/')}"
   end
   
@@ -30,7 +39,7 @@ module URLHelper
     array_path = path_name.split('/').reject(&:empty?)
     i = 0
     array_path.map! do |path|
-      if (path =~ /\w+_id$/).nil? && path != "id"
+      if not_path_id?(path)
         path
       else
         i += 1
@@ -40,7 +49,11 @@ module URLHelper
     "/#{array_path.join('/')}"
   end
   
-  def patter_to_a(pattern)
+  def not_path_id?(path_name)
+    (path_name =~ /\w+_id$/).nil? && path_name != "id"
+  end
+  
+  def pattern_to_a(pattern)
     str_path = pattern.source
     str_path.scan(/\w{2,}/)
   end

@@ -32,8 +32,10 @@ end
 
 class Cats2Controller < Phase7::ControllerBase  
   def index
-    p self.methods
-    content = "#{$cats.to_s} and #{cats_url} and #{cats_statuses_url(1)}"
+    content = "#{$cats.to_s} and 
+               #{cats_url} comes from cats_url method and 
+               #{cat_statuses_url(1)} comes from cat_statuses_url(1) method and
+               #{cat_status_url(1,1)} comes from cat_status_url(1,1) method"
     render_content(content, "text/text")
   end
 end
@@ -42,6 +44,7 @@ router = Phase7::Router.new
 router.draw do
   get Regexp.new("^/cats$"), Cats2Controller, :index
   get Regexp.new("^/cats/(?<cat_id>\\d+)/statuses$"), StatusesController, :index
+  get Regexp.new("^/cats/(?<cat_id>\\d+)/statuses/(?<id>\\d+)$"), StatusesController, :index
 end
 
 server = WEBrick::HTTPServer.new(Port: 3000)
