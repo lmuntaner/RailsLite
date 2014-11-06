@@ -19,7 +19,7 @@ module Phase5
     end
 
     def [](key)
-      @params[key]
+      @params[key.to_s]
     end
 
     def to_s
@@ -35,17 +35,17 @@ module Phase5
     # should return
     # { "user" => { "address" => { "street" => "main", "zip" => "89436" } } }
     def parse_www_encoded_form(www_encoded_form)
-      temp_hash = {}
+      result = {}
       URI::decode_www_form(www_encoded_form).each do |pair|
         keys = parse_key(pair.first)
-        temp_hash[keys.pop] = pair.last
-        while keys.count > 0
-          new_hash = Hash.new
-          new_hash[keys.pop] = temp_hash
-          temp_hash = new_hash
+        current_hash = {}
+        keys[0..-2].each do |key|
+          current_hash = result
+          current_hash[key] ||= current_hash
         end
+        result[keys[-1]] = pair.last
       end
-      temp_hash
+      result
     end
 
     # this should return an array
