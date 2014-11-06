@@ -30,7 +30,7 @@ module URLHelper
     array_path = path_name.split('/').reject(&:empty?)
     i = 0
     array_path.map! do |path|
-      if (path =~ /\w+_id$/).nil?
+      if (path =~ /\w+_id$/).nil? && path != "id"
         path
       else
         i += 1
