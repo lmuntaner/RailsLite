@@ -1,4 +1,5 @@
-== RAILS LITE
+# RAILS LITE
+===========
 
 This project replicates some of the magic of Rails.
 
@@ -17,3 +18,4 @@ routes, just like rails does with params.
 This specific project also creates the URLHelpers to set the paths in the
 friendly manner "cats_url" or "cat_status_url(1, 1)".
 This last part is in phase7 and it was a bonus for the project.
+Check out the code in the [link](https://github.com/lmuntaner/RailsLite/blob/master/lib/phase7/controller_base.rb)
